@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package graphicstest;
-
 import javax.sound.sampled.*;
 
 import java.io.*;
