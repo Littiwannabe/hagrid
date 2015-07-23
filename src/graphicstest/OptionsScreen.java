@@ -116,6 +116,7 @@ public class OptionsScreen extends JPanel {
             g2.drawImage(bulletImage, null, bullet.x_coord, bullet.y_coord);
         }
         ///////////
+        
    /*     if(Game.goingRight){
             at = new AffineTransform();
             if(Game.isCrouching){
