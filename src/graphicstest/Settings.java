@@ -14,10 +14,11 @@ public class Settings {
     public static int window_height = 500;
     public static int window_length = 600;
     
-    public static int hagrid_height = 300;
+    public static int hagrid_height = 150;
+    public static int hagrid_width = 150;
 
-    public static int bullet_height = 50;
-    public static int bullet_width = 100;
+    public static int bullet_height = 30;
+    public static int bullet_width = 50;
     public static int bullet_max_distance = 600;
     
 }

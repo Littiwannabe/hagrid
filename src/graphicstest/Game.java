@@ -78,7 +78,6 @@ public class Game {
       //  opt.getActionMap().put("left", goLeft);
       //  opt.getActionMap().put("down", goDown);
 
-        opt.init();
         
         this.opt_scr = opt;
         
@@ -157,10 +156,17 @@ public class Game {
             if(kb.c_pressed && is_opt){
                 kb.c_pressed = false;
                 HagridBullet new_bullet;
-                if(isCrouching){
-                    new_bullet = new HagridBullet(x_coord, y_coord + Settings.hagrid_height / 2, goingRight);  
+                int bulletY = y_coord + Settings.hagrid_height / 2 - Settings.bullet_height / 2;
+                int bulletX = x_coord;
+                if(goingRight){
+                    bulletX = bulletX + Settings.hagrid_width;
                 }else{
-                    new_bullet = new HagridBullet(x_coord, y_coord, goingRight);
+                    bulletX = bulletX - Settings.bullet_width;
+                }
+                if(isCrouching){
+                    new_bullet = new HagridBullet(bulletX, bulletY + Settings.hagrid_height / 4, goingRight);
+                }else{
+                    new_bullet = new HagridBullet(bulletX, bulletY, goingRight);
                 }
                 bullets.add(new_bullet);
                 Thread bullet_thread = new Thread(new_bullet);
@@ -172,7 +178,6 @@ public class Game {
             Thread.sleep(1000 / Settings.FPS); //assumes execution doesn't take ANY time
         }
         //TODO :    get rid of saved bulled intances after max_distance or hit
-        //          bullets go too much to the right, why?
         //          fix FPS to take into account the execution time
         
     }
