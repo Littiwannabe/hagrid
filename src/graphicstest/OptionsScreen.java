@@ -6,8 +6,7 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -35,6 +34,11 @@ public class OptionsScreen extends JPanel {
     
     private BufferedImage bulletImage = null;
     
+    private BufferedImage enemyPic = null;
+    private BufferedImage rev_enemyPic = null;
+
+    private BufferedImage enemyImage = null;
+    
     
     private void loadShit(){
         File pic_file = new File("kyrpa.jpg");
@@ -52,6 +56,14 @@ public class OptionsScreen extends JPanel {
             bulletPic = ImageIO.read(pic_file);
             bulletPic = resize(bulletPic, Settings.bullet_width, Settings.bullet_height);
             rev_bulletPic = flip(bulletPic);
+        }catch(Exception e){
+            System.out.println("Could not find file");
+        }
+        pic_file = new File("matti.png");
+        try{
+            enemyPic = ImageIO.read(pic_file);
+            enemyPic = resize(enemyPic, Settings.def_enemy_width, Settings.def_enemy_height);
+            rev_enemyPic = flip(enemyPic);
         }catch(Exception e){
             System.out.println("Could not find file");
         }
@@ -115,46 +127,15 @@ public class OptionsScreen extends JPanel {
             }
             g2.drawImage(bulletImage, null, bullet.x_coord, bullet.y_coord);
         }
-        ///////////
         
-   /*     if(Game.goingRight){
-            at = new AffineTransform();
-            if(Game.isCrouching){
-                at.translate(0, hagridPic.getHeight());
+        for(Enemy enemy : Game.enemies){
+            if(enemy.x_coord + enemy.width < Game.x_coord){
+                enemyImage = enemyPic;
             }else{
+                enemyImage = rev_enemyPic;
             }
-            at.rotate(Game.orientation, hagridPic.getWidth() / 2, hagridPic.getHeight() / 2);
-        }else{
-            at = AffineTransform.getScaleInstance(-1, 1);
-            if(Game.isCrouching){
-                at.translate(0, hagridPic.getHeight());
-            }else{
-            }
-            at.translate(-hagridPic.getWidth(), 0);
-            at.rotate(Game.orientation, hagridPic.getWidth() / 2, hagridPic.getHeight() / 2);
+            g2.drawImage(enemyImage, null, enemy.x_coord, enemy.y_coord);
         }
-        AffineTransformOp op = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
-        Graphics2D g2 = (Graphics2D)g;
-        g2.drawImage(hagridPic, op, Game.x_coord, Game.y_coord);
-        if(Game.bullets.size() > 0){
-            HagridBullet bullet;
-            for(int i = 0; i < Game.bullets.size(); i++){
-                bullet = Game.bullets.get(i);
-                AffineTransform bullet_at = new AffineTransform();
-                AffineTransformOp bullet_op;
-                if(!bullet.goingRight){
-                    bullet_at = AffineTransform.getScaleInstance(-1, 1);
-                }
-                bullet_at.scale(0.2, 0.2);
-                if(bullet.goingRight){
-                    bullet_at.translate(hagridPic.getWidth() + bulletPic.getWidth(), 0); //what the hell
-                }
-
-                bullet_op = new AffineTransformOp(bullet_at, AffineTransformOp.TYPE_BILINEAR);
-                g2.drawImage(bulletPic, bullet_op, bullet.x_coord, bullet.y_coord);
-            }
-        }
-           */
     }
     
 

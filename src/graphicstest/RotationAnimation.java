@@ -14,11 +14,15 @@ public class RotationAnimation implements Runnable{
     
     @Override
     public void run() {
+        double single_step = 0.1;
+        if(!Game.goingRight){
+            single_step = -0.1;
+        }
         double TO_MOVE = 2 * Math.PI;
         //int moved = 0;
         while(rotated < TO_MOVE){
             rotated = rotated + 0.1;
-            Game.orientation = Game.orientation + 0.1;
+            Game.orientation = Game.orientation + single_step;
             System.out.println(rotated);
             try {
                 Thread.sleep(10);

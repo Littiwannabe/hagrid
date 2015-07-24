@@ -18,8 +18,7 @@ public class GameSound implements Runnable{
     private AudioInputStream audio = null;
     private Clip jump_player = null;
     private Clip bgm_player = null;
-    
-    private int bgm_frame_position;
+
     
     public void loadSounds() throws IOException, UnsupportedAudioFileException, LineUnavailableException{
         

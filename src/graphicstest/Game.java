@@ -15,8 +15,8 @@ import javax.swing.*;
  * @author Jorma Kikkelsson
  */
 public class Game {
-    public static int x_coord = 150;
-    public static int y_coord = 100;
+    public static int x_coord = Settings.start_x;
+    public static int y_coord = Settings.start_y;
     public static double orientation = 0;
     public static boolean goingRight = true;
     public static boolean isCrouching = false;
@@ -33,6 +33,7 @@ public class Game {
     GameSound sounds = new GameSound();
     
     public static ArrayList<HagridBullet> bullets = new ArrayList<>();
+    public static ArrayList<Enemy> enemies = new ArrayList<>();
     
     private void init() throws Exception{
         //check if ikkuna already exists?
@@ -60,24 +61,11 @@ public class Game {
         ikkuna.setVisible(true);
         ikkuna.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ikkuna.setBackground(Color.yellow);
-        //ikkuna.setBounds(20, 20, 500, 300);
         ikkuna.setSize(Settings.window_length, Settings.window_height);
         OptionsScreen opt = new OptionsScreen();
         InputMap input = opt.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-    //    input.put(KeyStroke.getKeyStroke('g'), "g");
         input.put(KeyStroke.getKeyStroke(KeyEvent.VK_G, 0 , false), "derp");
-    //    input.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0 , false), "up");
-    //    input.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0 , false), "right");
-        input.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0 , false), "left");
-        input.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0 , false), "down");
-        
-      //  input.put(KeyStroke.getKeyStroke(KeyEvent.VK_G, 0 , false), 
         opt.getActionMap().put("derp", doNothing);
-      //  opt.getActionMap().put("up", goUp);
-      //  opt.getActionMap().put("right", goRight);
-      //  opt.getActionMap().put("left", goLeft);
-      //  opt.getActionMap().put("down", goDown);
-
         
         this.opt_scr = opt;
         
@@ -89,7 +77,7 @@ public class Game {
         ikkuna.validate();
         ikkuna.repaint();
         long now = System.currentTimeMillis();
-        int update_counter = 0; //used to control FPS
+        int update_counter = 0; //used to control movement_speed
         main_scr = new SomeOtherScreen();
     //    this.ikkuna.add(main_scr);
         card_LA.add(main_scr, MAIN);
@@ -104,11 +92,14 @@ public class Game {
         
         kb = kb_opt;
         
-        
+        Enemy new_enemy = new Enemy(500, 300);
+        enemies.add(new_enemy);
+        Thread enemy_thread = new Thread(new_enemy);
+        enemy_thread.start();
         //Game loop starts here
         while(true){
             update_counter++;
-            //System.out.println(laskuri / FPS);
+            //System.out.println(laskuri / movement_speed);
             if(kb.up_pressed && is_opt){
                 //y_coord--;
                 JumpAnimation jump = new JumpAnimation();
@@ -175,11 +166,11 @@ public class Game {
 
             card_LA.repaint();  
 
-            Thread.sleep(1000 / Settings.FPS); //assumes execution doesn't take ANY time
+            Thread.sleep(1000 / Settings.movement_speed); //assumes execution doesn't take ANY time
         }
-        //TODO :    get rid of saved bulled intances after max_distance or hit
-        //          fix FPS to take into account the execution time
-        
+        //TODO :    -get rid of saved bulled intances after max_distance or hit
+        //          -fix movement_speed to take into account the execution time
+        //          -prevent multiple simultanious rolls (and jumps?)
     }
     /**
      * @param args the command line arguments
