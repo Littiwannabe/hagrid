@@ -46,7 +46,7 @@ public class Enemy implements Runnable{
                 to_move = targetx - this.width - this.x_coord;
             }
             int counter = 0;
-            while(counter < to_move){
+            while(counter < to_move +1){
                 counter++;
                 this.x_coord += x_step;
                 try {

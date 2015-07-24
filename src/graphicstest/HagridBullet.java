@@ -34,7 +34,7 @@ public class HagridBullet implements Runnable {
         if(goingRight){
             while(x_coord < x_max_limit){
                 x_coord++;
-                System.out.println(x_coord);
+      //          System.out.println(x_coord);
 
                 try {
                     Thread.sleep(reversed_bullet_speed);
@@ -45,7 +45,7 @@ public class HagridBullet implements Runnable {
         }else{
             while(x_coord > x_min_limit){
                 x_coord--;
-                System.out.println(x_coord);
+   //             System.out.println(x_coord);
 
                 try {
                     Thread.sleep(reversed_bullet_speed);

@@ -17,7 +17,7 @@ public class Settings {
     public static int hagrid_height = 150;
     public static int hagrid_width = 150;
     public static int start_x = 100;
-    public static int start_y = 300;
+    public static int start_y = 200;
 
     public static int bullet_height = 30;
     public static int bullet_width = 50;

@@ -96,14 +96,12 @@ public class OptionsScreen extends JPanel {
         if(Game.goingRight){
             if(Game.isCrouching){
                 hagridImage = crouching_hagridPic;
-                y_coord = y_coord + hagridImage.getHeight();
             }else{
                 hagridImage = hagridPic;
             }
         }else{
             if(Game.isCrouching){
                 hagridImage = rev_crouching_hagridPic;
-                y_coord = y_coord + hagridImage.getHeight();
             }else{
                 hagridImage = rev_hagridPic;
             }

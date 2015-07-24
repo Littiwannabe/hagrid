@@ -96,9 +96,13 @@ public class Game {
         enemies.add(new_enemy);
         Thread enemy_thread = new Thread(new_enemy);
         enemy_thread.start();
+        CollisionDetection collision = new CollisionDetection();
         //Game loop starts here
+        boolean previous_down = false;
         while(true){
             update_counter++;
+            int normal_y = Game.y_coord;
+            int crouching_y = Game.y_coord + Settings.hagrid_height / 2;
             //System.out.println(laskuri / movement_speed);
             if(kb.up_pressed && is_opt){
                 //y_coord--;
@@ -113,10 +117,20 @@ public class Game {
                 x_coord++;
                 goingRight = true;
             }
-            if(kb.down_pressed && is_opt){
-                isCrouching = true;
-            }else{
-                isCrouching = false;
+            if(is_opt){
+                if(kb.down_pressed){
+                    if(!previous_down){
+                        y_coord = y_coord + Settings.hagrid_height / 2;
+                    }
+                    isCrouching = true;                    
+                    previous_down = isCrouching;
+                }else{
+                    if(previous_down){
+                        y_coord = y_coord - Settings.hagrid_height / 2;
+                    }
+                    isCrouching = false;
+                    previous_down = isCrouching;
+                }
             }
             if(kb.left_pressed && is_opt){
                 x_coord--;
@@ -155,7 +169,7 @@ public class Game {
                     bulletX = bulletX - Settings.bullet_width;
                 }
                 if(isCrouching){
-                    new_bullet = new HagridBullet(bulletX, bulletY + Settings.hagrid_height / 4, goingRight);
+                    new_bullet = new HagridBullet(bulletX, bulletY - Settings.hagrid_height / 4, goingRight);
                 }else{
                     new_bullet = new HagridBullet(bulletX, bulletY, goingRight);
                 }
@@ -163,7 +177,12 @@ public class Game {
                 Thread bullet_thread = new Thread(new_bullet);
                 bullet_thread.start();
             }
-
+            collision.whichEnemyHit();
+            for(int i = 0; i < collision.hit_enemies.size(); i++){
+                enemies.remove((int)collision.hit_enemies.get(i));
+            }
+            collision.hit_enemies = new ArrayList<Integer>();   //slow?
+            collision.isHitByEnemy();
             card_LA.repaint();  
 
             Thread.sleep(1000 / Settings.movement_speed); //assumes execution doesn't take ANY time
@@ -171,6 +190,9 @@ public class Game {
         //TODO :    -get rid of saved bulled intances after max_distance or hit
         //          -fix movement_speed to take into account the execution time
         //          -prevent multiple simultanious rolls (and jumps?)
+        //          -concurrent collision detection?
+        //          -fix collision detection
+        //          -as of now, enemy threads remain even after removing from the list
     }
     /**
      * @param args the command line arguments
